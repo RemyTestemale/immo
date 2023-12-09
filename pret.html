@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation de Crédit Immobilier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Simulation de Crédit Immobilier</h1>
+
+    <label for="interestRate">Taux d'intérêt (%) :</label>
+    <input type="number" id="interestRate" value="5.01">
+
+    <label for="loanAmount">Montant Emprunté (euros) :</label>
+    <input type="number" id="loanAmount" value="109218">
+
+    <label for="loanTerm">Durée du Prêt (mois) :</label>
+    <input type="number" id="loanTerm" value="289">
+
+    <label for="monthlyPayment">Mensualité :</label>
+    <div id="monthlyPayment"></div>
+
+    <label for="totalCost">Coût Total du Crédit :</label>
+    <div id="totalCost"></div>
+
+    <script>
+        // Fonction pour calculer le prêt
+        function calculateLoan() {
+            // Récupérer les valeurs des champs
+            var interestRate = parseFloat(document.getElementById('interestRate').value);
+            var loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            var loanTerm = parseInt(document.getElementById('loanTerm').value);
+
+            // Calculer le taux d'intérêt mensuel
+            var monthlyInterestRate = (interestRate / 100) / 12;
+
+            // Calculer la mensualité
+            var monthlyPayment = loanAmount * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, loanTerm)) / (Math.pow(1 + monthlyInterestRate, loanTerm) - 1);
+
+            // Calculer le coût total du crédit
+            var totalCost = (monthlyPayment * loanTerm) - loanAmount;
+
+            // Mettre à jour les champs d'affichage
+            document.getElementById('monthlyPayment').innerText = monthlyPayment.toFixed(2) + ' euros';
+            document.getElementById('totalCost').innerText = totalCost.toFixed(2) + ' euros';
+        }
+
+        // Ajouter des écouteurs d'événements input pour déclencher le calcul automatique
+        document.getElementById('interestRate').addEventListener('input', calculateLoan);
+        document.getElementById('loanAmount').addEventListener('input', calculateLoan);
+        document.getElementById('loanTerm').addEventListener('input', calculateLoan);
+
+        // Calculer le prêt au chargement de la page
+        calculateLoan();
+    </script>
+
+</body>
+</html>
